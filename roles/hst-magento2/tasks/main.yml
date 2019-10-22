@@ -56,8 +56,8 @@
 - name: flush MySQL database
   command: mysql --defaults-extra-file=~/.my_{{ magento2_dbname }}.cnf -e "drop database {{ magento2_dbname }}; create database {{ magento2_dbname }};"
 
-- name: deploy magento and modules
-  command: ~/bin/composer -n --ignore-platform-reqs create-project magento/community-edition:{{ magento2_version }} .
+- name: install magento and modules
+  command: ~/bin/composer -n --ignore-platform-reqs create-project --repository-url=https://{{ magento2_ckeypub }}:{{ magento2_ckeypriv }}@repo.magento.com/ magento/project-community-edition={{ magento2_version }} .
     chdir={{ magento2_folder }}
 
 - name: config composer environment
@@ -66,15 +66,20 @@
   with_items:
     - "repositories.magento composer https://repo.magento.com/packages.json"
     - "http-basic.repo.magento.com {{ magento2_ckeypub }} {{ magento2_ckeypriv }}"
-
-- name: configure magento
-  command: bin/magento setup:install --base-url={{ magento2_baseurl }} --db-host={{ magento2_dbhost }} --db-name={{ magento2_dbname }} --db-user={{ magento2_dbuser }} --db-password={{ magento2_dbpass }} --admin-firstname={{ magento2_admin_firstname }} --admin-lastname={{ magento2_admin_lastname }} --admin-email={{ magento2_admin_email }} --admin-user={{ magento2_admin_username }} --admin-password={{ magento2_admin_password }} --language={{ magento2_locale }} --currency={{ magento2_currency }} --timezone={{ magento2_timezone }} --use-rewrites="1" --backend-frontname={{ magento2_backend }}
+  
+- name: require sample data
+  command: ~/bin/composer require {{ item }}
     chdir={{ magento2_folder }}
+  with_items:
+    - "magento/module-sample-data"
 
-- name: deploy sample data
+- name: install sample data
   command: bin/magento {{ item }}
     chdir={{ magento2_folder }}
   retries: 3
   with_items:
     - "sampledata:deploy"
-    - "setup:upgrade"
+
+- name: configure magento
+  command: bin/magento setup:install --base-url={{ magento2_baseurl }} --db-host={{ magento2_dbhost }} --db-name={{ magento2_dbname }} --db-user={{ magento2_dbuser }} --db-password={{ magento2_dbpass }} --admin-firstname={{ magento2_admin_firstname }} --admin-lastname={{ magento2_admin_lastname }} --admin-email={{ magento2_admin_email }} --admin-user={{ magento2_admin_username }} --admin-password={{ magento2_admin_password }} --language={{ magento2_locale }} --currency={{ magento2_currency }} --timezone={{ magento2_timezone }} --use-rewrites="1" --backend-frontname={{ magento2_backend }}
+    chdir={{ magento2_folder }}
