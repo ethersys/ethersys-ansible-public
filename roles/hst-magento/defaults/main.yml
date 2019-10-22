@@ -1,4 +1,4 @@
-magento_version: magento-mirror-1.9.3.8
+magento_version: magento-mirror-1.9.4.1
 magento_folder: /home/{{ ansible_user }}/magento
 magento_fqdn: "{{ ansible_user }}.occitech.eu"
 magento_baseurl: "http://{{ magento_fqdn }}"
