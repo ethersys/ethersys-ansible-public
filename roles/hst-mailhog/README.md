@@ -40,3 +40,15 @@ Require valid-user
 Satisfy any
 </Location>
 ```
+
+Or create a new **User program** site with this settings:
+
+* **Command** : `~/bin/mailhog -auth-file $HOME/.mailhog_htpasswd -maildir-path $HOME/mailhog/ -storage maildir -smtp-bind-addr $ALWAYSDATA_HTTPD_IP:1032 -ui-bind-addr $ALWAYSDATA_HTTPD_IP:$ALWAYSDATA_HTTPD_PORT -api-bind-addr $ALWAYSDATA_HTTPD_IP:$ALWAYSDATA_HTTPD_PORT`
+* **Working directory** : `mailhog`
+* **Environment** : ``
+
+Mailhog password file can be created using:
+
+```bash
+htpasswd -nbB <USER> <PASS>
+```
