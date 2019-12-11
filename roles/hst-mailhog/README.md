@@ -5,7 +5,7 @@ Mailhog is a SMTP server useful for testing https://github.com/mailhog/MailHog
 * approximative size: 13MB
 * default SMTP port: 1032
 * default UI pour: 8032
-* default Mailhog version: 0.2.1
+* default Mailhog version: 1.0.0
 
 ## Usage
 
