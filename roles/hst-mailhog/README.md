@@ -22,7 +22,19 @@ If you use a PHP app, you could configure **sendmail_path** to use **mhsendmail*
 sendmail_path='/home/<acount_name>/bin/mhsendmail  --smtp-addr="<local_address>:<mailhog_port>"'
 ```
 
-To configure access to Mailhog UI, you need to create a new transparent redirect (reverse proxy) site or add a proxy (example with auth below) into **Advanced Settings** box of an Apache standard site.
+To configure access to Mailhog UI, you could create a new **User program** site with this settings (recommended way):
+
+* **Command** : `~/bin/mailhog -auth-file $HOME/.mailhog_htpasswd -maildir-path $HOME/mailhog/ -storage maildir -smtp-bind-addr $ALWAYSDATA_HTTPD_IP:1032 -ui-bind-addr $ALWAYSDATA_HTTPD_IP:$ALWAYSDATA_HTTPD_PORT -api-bind-addr $ALWAYSDATA_HTTPD_IP:$ALWAYSDATA_HTTPD_PORT`
+* **Working directory** : `mailhog`
+* **Environment** : ``
+
+Mailhog password file can be created using:
+
+```bash
+htpasswd -nbB <USER> <PASS>
+```
+
+Or you could create a new transparent redirect (reverse proxy) site or a proxy (example with auth below) into **Advanced Settings** box of an Apache standard site.
 
 ```conf
 ProxyPreserveHost On
@@ -39,16 +51,4 @@ AuthUserFile "/home/<acount_name>/.htpasswd"
 Require valid-user
 Satisfy any
 </Location>
-```
-
-Or create a new **User program** site with this settings:
-
-* **Command** : `~/bin/mailhog -auth-file $HOME/.mailhog_htpasswd -maildir-path $HOME/mailhog/ -storage maildir -smtp-bind-addr $ALWAYSDATA_HTTPD_IP:1032 -ui-bind-addr $ALWAYSDATA_HTTPD_IP:$ALWAYSDATA_HTTPD_PORT -api-bind-addr $ALWAYSDATA_HTTPD_IP:$ALWAYSDATA_HTTPD_PORT`
-* **Working directory** : `mailhog`
-* **Environment** : ``
-
-Mailhog password file can be created using:
-
-```bash
-htpasswd -nbB <USER> <PASS>
 ```
