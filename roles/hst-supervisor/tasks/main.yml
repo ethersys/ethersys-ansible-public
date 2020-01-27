@@ -53,4 +53,4 @@
     name: relaunch Supervisor if it's missing
     minute: "*"
     hour: "*"
-    job: "pgrep supervisord > /dev/null 2>&1 || {{ supervisor_bin }}/supervisord"
+    job: "ps -p $(cat {{ supervisor_folder }}/run/supervisord.pid) > /dev/null 2>&1 || {{ supervisor_bin }}/supervisord"
