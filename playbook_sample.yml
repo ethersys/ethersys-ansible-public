@@ -1,16 +1,16 @@
 ---
 - name: Install my favorite tools on all my account
-  hosts: myOccitech-hosting
+  hosts: myEthersys-hosting
   roles:
     - role: hst-bin
     - role: hst-logrotate
 
 - name: Install specific Tools for my Wordpress hosting
-  hosts: myOccitech-WordPress
+  hosts: myEthersys-Wordpress
   roles:
     - role: hst-wpcli
 
 - name: Install my favorite tools on all my account!
-  hosts: myOccitech-Redmine
+  hosts: myEthersys-Redmine
   roles:
     - role: hst-ruby

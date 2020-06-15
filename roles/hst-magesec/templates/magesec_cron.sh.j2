@@ -14,7 +14,7 @@ SCANDIRS="/home/{{ ansible_user }}/ /storage/{{ ansible_user }}/"
 MWSCAN=/home/{{ ansible_user }}/python/builds/{{ python_version }}/bin/mwscan
 MWSCANLOCK=/home/{{ ansible_user }}/.mwscan.lock
 MWSCANLOG=/home/{{ ansible_user }}/mwscan.log
-MWSCANFROM="From: Malware Scanner <{{ ansible_user }}@occitech.eu>"
+MWSCANFROM="From: Malware Scanner <{{ ansible_user }}@ethersys.host>"
 MWWHITELIST=/home/{{ ansible_user }}/mwscan_whitelist.txt
 
 touch $MWWHITELIST

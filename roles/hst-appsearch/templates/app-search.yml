@@ -94,7 +94,7 @@ app_search.auth.source: elasticsearch-native
 #email.account.smtp.port: 25
 #email.account.smtp.user:
 #email.account.smtp.password:
-#email.account.email_defaults.from: {{ ansible_user }}@occitech.eu
+#email.account.email_defaults.from: {{ ansible_user }}@ethersys.host
 #
 # ----------------------------------- APIs ------------------------------------
 #

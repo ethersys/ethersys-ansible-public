@@ -1,4 +1,5 @@
-[myOccitech-hosting]
-<occitech_account> ansible_host=<occitech_ssh_server> ansible_user=<occitech_ssh_userr>
-myOccitech-WordPress ansible_host=mywordpress.occitech.eu ansible_user=mywordpress
-myOccitech-Redmine ansible_host=myredmine.occitech.eu ansible_user=myredmine
+[myEthersys-hosting]
+<ethersys_account> ansible_host=<ethersys_ssh_server> ansible_user=<ethersys_ssh_user>
+myEthersys-WordPress ansible_host=mywordpress.ethersys.eu ansible_user=mywordpress
+myEthersys-Redmine ansible_host=myredmine.ethersys.eu ansible_user=myredmine
+myEthersys-NodeApp ansible_host=mynodeapp.ethersys.eu ansible_user=mynodeapp

@@ -1,5 +1,5 @@
 ---
 - name: Install Node on my account
-  hosts: myOccitech-Node
+  hosts: myEthersys-NodeApp
   roles:
     - role: hst-node
