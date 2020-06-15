@@ -24,31 +24,18 @@ sendmail_path='/home/<acount_name>/bin/mhsendmail  --smtp-addr="<local_address>:
 
 To configure access to Mailhog UI, you could create a new **User program** site with this settings (recommended way):
 
-* **Command** : `~/bin/mailhog -auth-file $HOME/.mailhog_htpasswd -maildir-path $HOME/mailhog/ -storage maildir -smtp-bind-addr $ALWAYSDATA_HTTPD_IP:1032 -ui-bind-addr $ALWAYSDATA_HTTPD_IP:$ALWAYSDATA_HTTPD_PORT -api-bind-addr $ALWAYSDATA_HTTPD_IP:$ALWAYSDATA_HTTPD_PORT`
+* **Command** : `~/bin/mailhog -auth-file $HOME/mailhog/.htpasswd -maildir-path $HOME/mailhog/data/ -storage maildir -smtp-bind-addr $IP:1032 -ui-bind-addr $IP:$PORT -api-bind-addr $IP:$PORT`
 * **Working directory** : `mailhog`
 * **Environment** : ``
 
-Mailhog password file can be created using:
+Mailhog password file can be changed using:
 
 ```bash
-htpasswd -nbB <USER> <PASS>
+htpasswd -nbB <USER> <PASS> > $HOME/mailhog/.htpasswd
 ```
 
-Or you could create a new transparent redirect (reverse proxy) site or a proxy (example with auth below) into **Advanced Settings** box of an Apache standard site.
+Or you could create a new redirect site using the following settings
 
-```conf
-ProxyPreserveHost On
-ProxyPass /mail/ http://<local_address>:<mailhog_port>/
-ProxyPassReverse /mail/ http://<local_address>:<mailhog_port>/
-
-<Location /mail>
-Order Deny,allow
-Deny From All
-
-AuthType Basic
-AuthName "Restricted"
-AuthUserFile "/home/<acount_name>/.htpasswd"
-Require valid-user
-Satisfy any
-</Location>
-```
+* type: redirect
+* destination URL: http://<LOCAL_ADDRESS>:8032
+* forwading type: transparent (reverse proxy)

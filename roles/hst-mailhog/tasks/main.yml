@@ -11,6 +11,14 @@
     dest: ~/bin/mhsendmail
     mode: 0755
 
+- name: create mailhog dir
+  file:
+    path: ~/mailhog/data
+    state: directory
+
+- name: reload create Mailhog htpasswd
+  shell: htpasswd -nbB {{ ansible_user }} {{ mailhog_password }} > $HOME/mailhog/.htpasswd
+
 - name: send Supervisor config
   template:
     src:  supervisor.conf.j2
