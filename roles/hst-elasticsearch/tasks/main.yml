@@ -19,7 +19,7 @@
   when: ( elastic_version < "5.0.0" )
 
 - name: set up Java path for version > 4.x
-  set_fact: java_home="/usr/lib/jvm/java-8-openjdk-amd64/"
+  set_fact: java_home="/usr/alwaysdata/java/8.0.41/"
   when: not ( elastic_version < "5.0.0" )
 
 - name: download ElasticSearch for version < 5.0.0
