@@ -37,16 +37,22 @@
   command: "{{ supervisor_bin }}/supervisorctl status"
   register: supervisor_status
   ignore_errors: yes
+  environment:
+    PYTHON_VERSION: "{{ python_version }}"
 
 - name: start Supervisor if not already running
   command: "{{ supervisor_bin }}/supervisord"
   when: '("refused connection" in supervisor_status.stdout) or ("no such file" in supervisor_status.stdout)'
+  environment:
+    PYTHON_VERSION: "{{ python_version }}"
 
 - name: ensure Supervisor start at boot
   cron:
     name: launch Supervisor
     special_time: reboot
     job: "{{ supervisor_bin }}/supervisord"
+  environment:
+    PYTHON_VERSION: "{{ python_version }}"
 
 - name: ensure Supervisor stay alive
   cron:
