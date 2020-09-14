@@ -1,4 +1,5 @@
 ---
 dependencies:
+  - hst-loopback
   - hst-composer
   - hst-n98magerun2

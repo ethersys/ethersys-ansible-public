@@ -80,6 +80,20 @@
   with_items:
     - "sampledata:deploy"
 
+- name: do not enable amqp by default
+  command: bin/magento module:disable {{ item }}
+    chdir={{ magento2_folder }}
+  with_items:
+    - "Magento_WebapiAsync"
+    - "Magento_Amqp"
+  when: not ( magento2_version < "2.4.0" )
+  
 - name: configure magento
   command: bin/magento setup:install --base-url={{ magento2_baseurl }} --db-host={{ magento2_dbhost }} --db-name={{ magento2_dbname }} --db-user={{ magento2_dbuser }} --db-password={{ magento2_dbpass }} --admin-firstname={{ magento2_admin_firstname }} --admin-lastname={{ magento2_admin_lastname }} --admin-email={{ magento2_admin_email }} --admin-user={{ magento2_admin_username }} --admin-password={{ magento2_admin_password }} --language={{ magento2_locale }} --currency={{ magento2_currency }} --timezone={{ magento2_timezone }} --use-rewrites="1" --backend-frontname={{ magento2_backend }}
     chdir={{ magento2_folder }}
+  when: magento2_version < "2.4.0"
+
+- name: configure magento
+  command: bin/magento setup:install --base-url={{ magento2_baseurl }} --db-host={{ magento2_dbhost }} --db-name={{ magento2_dbname }} --db-user={{ magento2_dbuser }} --db-password={{ magento2_dbpass }} --admin-firstname={{ magento2_admin_firstname }} --admin-lastname={{ magento2_admin_lastname }} --admin-email={{ magento2_admin_email }} --admin-user={{ magento2_admin_username }} --admin-password={{ magento2_admin_password }} --language={{ magento2_locale }} --currency={{ magento2_currency }} --timezone={{ magento2_timezone }} --use-rewrites="1" --backend-frontname={{ magento2_backend }} --elasticsearch-host={{ loopback_adress }} --elasticsearch-port=9200
+    chdir={{ magento2_folder }}
+  when: not ( magento2_version < "2.4.0" )
