@@ -1,7 +1,7 @@
 memcached_name: Memcached
-memcached_version: 1.5.8
+memcached_version: 1.6.7
 memcached_lib_version: 1.0.18
-memcached_php_version: 3.0.4
+memcached_php_version: 3.1.5
 memcached_folder: "/home/{{ ansible_user }}/memcached"
 memcached_port: 11211
 memcached_memory: 256MB

@@ -43,6 +43,19 @@
   shell: chdir={{ memcached_folder }}/src/libmemcached-{{ memcached_lib_version }}/ {{ item }}
   with_items:
     - ./configure --prefix={{ memcached_folder }}/lib
+
+- name: patch Memcached lib Makefile
+  replace:
+    path: "{{ memcached_folder }}/src/libmemcached-{{ memcached_lib_version }}/Makefile"
+    regexp: '^({{ item }} =)(.*)$'
+    replace: '\1\2 -fpermissive'
+  with_items:
+    - CFLAGS
+    - CXXFLAGS
+
+- name: configure and compile Memcached lib
+  shell: chdir={{ memcached_folder }}/src/libmemcached-{{ memcached_lib_version }}/ {{ item }}
+  with_items:
     - make
     - make install
 
