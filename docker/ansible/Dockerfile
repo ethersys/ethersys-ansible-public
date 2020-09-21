@@ -1,4 +1,4 @@
-FROM python:3.6-alpine3.7
+FROM python:3.8-alpine3.12
 
 RUN apk add --update gcc musl-dev libffi-dev openssl-dev ca-certificates git rsync openssh-client docker
 RUN pip install --upgrade pip
