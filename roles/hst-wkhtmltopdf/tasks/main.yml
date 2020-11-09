@@ -1,5 +1,5 @@
 ---
-- name: install wkhtmltopdf
+- name: install wkhtmltopdf prior to 0.12.5
   unarchive:
     src: https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/{{ wkhtmltopdf_version }}/wkhtmltox-{{ wkhtmltopdf_version }}_linux-generic-amd64.tar.xz
     extra_opts: [--strip-components=2]
@@ -7,4 +7,46 @@
     exclude: ["wkhtmltox/include","wkhtmltox/lib","wkhtmltox/share"]
     mode: 0755
     remote_src: yes
+  when: wkhtmltopdf_version is version('0.12.5', '<')
 
+- name: create wkhtmltopdf deb dir for 0.12.5 and later
+  file:
+    path: ~/wkhtmltopdf/{{ wkhtmltopdf_version }}/
+    state: directory
+    mode: '0755'
+  when: wkhtmltopdf_version is version('0.12.5', '>=')
+
+- name: download wkhtmltopdf deb for 0.12.5
+  get_url:
+    url: https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/{{ wkhtmltopdf_version }}/wkhtmltox_{{ wkhtmltopdf_version }}-1.buster_amd64.deb
+    dest: ~/wkhtmltopdf/{{ wkhtmltopdf_version }}/
+  when: wkhtmltopdf_version is version('0.12.5', '==')
+
+- name: download wkhtmltopdf deb for 0.12.6
+  get_url:
+    url: https://github.com/wkhtmltopdf/packaging/releases/download/{{ wkhtmltopdf_version }}-1/wkhtmltox_{{ wkhtmltopdf_version }}-1.buster_amd64.deb
+    dest: ~/wkhtmltopdf/{{ wkhtmltopdf_version }}/
+  when: wkhtmltopdf_version is version('0.12.6', '==')
+
+- name: extract deb for 0.12.5 and later
+  command: ar x wkhtmltox_{{ wkhtmltopdf_version }}-1.buster_amd64.deb
+  args:
+    chdir: ~/wkhtmltopdf/{{ wkhtmltopdf_version }}/
+  when: wkhtmltopdf_version is version('0.12.5', '>=')
+
+- name: extract data.tar.xz for 0.12.5 and later
+  unarchive:
+    src: ~/wkhtmltopdf/{{ wkhtmltopdf_version }}/data.tar.xz
+    dest: ~/wkhtmltopdf/{{ wkhtmltopdf_version }}/
+    remote_src: yes
+  when: wkhtmltopdf_version is version('0.12.5', '>=')
+
+- name: move binary to bin dir for 0.12.5 and later
+  copy:
+    src: ~/wkhtmltopdf/{{ wkhtmltopdf_version }}/usr/local/bin/{{ item }}
+    dest: ~/bin/{{ item }}
+    mode: '0755'
+    remote_src: yes
+  with_items:
+  - wkhtmltoimage
+  - wkhtmltopdf
