@@ -1,0 +1,11 @@
+kibana_name: kibana
+kibana_version: "7.10.1"
+kibana_folder: "/home/{{ ansible_user }}/kibana"
+kibana_address: "{{ loopback_adress }}"
+kibana_port: "5601"
+kibana_user: "kibana_{{ ansible_user }}"
+kibana_pass: "ToBeChanged"
+elastic_adress: "{{ loopback_adress }}"
+elastic_port: "9200"
+elastic_user: "{{ ansible_user }}"
+elastic_pass: "ToBeChanged"
