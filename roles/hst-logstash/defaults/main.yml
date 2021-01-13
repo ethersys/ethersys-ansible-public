@@ -1,0 +1,11 @@
+logstash_name: logstash
+logstash_version: "7.10.1"
+logstash_folder: "/home/{{ ansible_user }}/logstash"
+logstash_address: "{{ loopback_adress }}"
+logstash_port: "9600"
+logstash_user: "logstash_{{ ansible_user }}"
+logstash_pass: "ToBeChanged"
+elastic_adress: "{{ loopback_adress }}"
+elastic_port: "9200"
+elastic_user: "{{ ansible_user }}"
+elastic_pass: "ToBeChanged"
