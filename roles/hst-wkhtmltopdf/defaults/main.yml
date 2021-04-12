@@ -1,1 +1,2 @@
 wkhtmltopdf_version: 0.12.4
+wkhtmltopdf_folder: "/home/{{ ansible_user }}/wkhtmltopdf"
