@@ -14,13 +14,17 @@
 - name: reload Supervisor config to update ElasticSearch status
   command: "{{ supervisor_bin }}/supervisorctl update"
 
-- name: set up Java path for version < 5.0.0
+- name: set up Java path for version < 5.x
   set_fact: java_home="/usr/lib/jvm/java-7-openjdk-amd64/"
   when: ( elastic_version < "5.0.0" )
 
-- name: set up Java path for version > 4.x
+- name: set up Java path for version 5.x
   set_fact: java_home="/usr/alwaysdata/java/8.0.41/"
-  when: not ( elastic_version < "5.0.0" )
+  when: (not ( elastic_version < "5.0.0" )) and ( elastic_version < "6.0.0" )
+
+- name: set up Java path for version > 5.x
+  set_fact: java_home="/usr/alwaysdata/java/11.0.28/"
+  when:  not ( elastic_version < "6.0.0" )
 
 - name: download ElasticSearch for version < 5.0.0
   get_url:
