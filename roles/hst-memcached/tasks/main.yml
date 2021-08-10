@@ -6,10 +6,18 @@
     - run
     - lib
 
-- name: download Memcached source
+- name: download actual Memcached source
   get_url:
     url: http://www.memcached.org/files/memcached-{{ memcached_version }}.tar.gz
     dest: "{{ memcached_folder }}/src/memcached-{{ memcached_version }}.tar.gz"
+  when: (memcached_version > "1.6")
+
+- name: download old Memcached source 
+  get_url:
+      url: http://www.memcached.org/files/old/memcached-{{ memcached_version }}.tar.gz
+      dest: "{{ memcached_folder }}/src/memcached-{{ memcached_version }}.tar.gz"
+  when: (not (memcached_version > "1.6"))
+
 
 - name: extract Memcached source
   unarchive:

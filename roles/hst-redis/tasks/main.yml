@@ -30,7 +30,7 @@
     dest: ~/redis/{{ redis_name }}/etc/redis.conf
 
 - name: install Redis PHP extension
-  command: ad_install_pecl redis
+  command: ad_install_pecl redis {{redis_php_extension}}
 
 - name: send Supervisor config
   template:
