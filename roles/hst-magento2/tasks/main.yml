@@ -72,6 +72,7 @@
     chdir={{ magento2_folder }}
   with_items:
     - "magento/module-sample-data"
+  when: magento2_sample_data
 
 - name: install sample data
   command: bin/magento {{ item }}
@@ -79,6 +80,7 @@
   retries: 3
   with_items:
     - "sampledata:deploy"
+  when: magento2_sample_data
 
 - name: do not enable amqp by default
   command: bin/magento module:disable {{ item }}
@@ -94,6 +96,6 @@
   when: magento2_version < "2.4.0"
 
 - name: configure magento
-  command: bin/magento setup:install --base-url={{ magento2_baseurl }} --db-host={{ magento2_dbhost }} --db-name={{ magento2_dbname }} --db-user={{ magento2_dbuser }} --db-password={{ magento2_dbpass }} --admin-firstname={{ magento2_admin_firstname }} --admin-lastname={{ magento2_admin_lastname }} --admin-email={{ magento2_admin_email }} --admin-user={{ magento2_admin_username }} --admin-password={{ magento2_admin_password }} --language={{ magento2_locale }} --currency={{ magento2_currency }} --timezone={{ magento2_timezone }} --use-rewrites="1" --backend-frontname={{ magento2_backend }} --elasticsearch-host={{ loopback_adress }} --elasticsearch-port=9200
+  command: bin/magento setup:install --base-url={{ magento2_baseurl }} --db-host={{ magento2_dbhost }} --db-name={{ magento2_dbname }} --db-user={{ magento2_dbuser }} --db-password={{ magento2_dbpass }} --admin-firstname={{ magento2_admin_firstname }} --admin-lastname={{ magento2_admin_lastname }} --admin-email={{ magento2_admin_email }} --admin-user={{ magento2_admin_username }} --admin-password={{ magento2_admin_password }} --language={{ magento2_locale }} --currency={{ magento2_currency }} --timezone={{ magento2_timezone }} --use-rewrites="1" --backend-frontname={{ magento2_backend }} --elasticsearch-host={{ magento2_elasticsearch_host }} --elasticsearch-port={{ magento2_elasticsearch_port }} --elasticsearch-enable-auth={{ magento2_elasticsearch_enable_auth }} --elasticsearch-username={{ magento2_elasticsearch_username }} --elasticsearch-password={{ magento2_elasticsearch_password }} --elasticsearch-index-prefix="magento2"
     chdir={{ magento2_folder }}
   when: not ( magento2_version < "2.4.0" )

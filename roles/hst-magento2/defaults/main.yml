@@ -16,3 +16,9 @@ magento2_admin_lastname: ethersys.host
 magento2_admin_password: tobechang3d!
 magento2_admin_email: "{{ ansible_user }}@ethersys.host"
 magento2_encryption_key: "{{ 9999999999999999999999 | random }}"
+magento2_sample_data: yes
+magento2_elasticsearch_host: "{{ loopback_adress }}"
+magento2_elasticsearch_port: "9200"
+magento2_elasticsearch_enable_auth: "0"
+magento2_elasticsearch_username: ""
+magento2_elasticsearch_password: ""
