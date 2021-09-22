@@ -35,6 +35,8 @@
 
 - name: reload Supervisor config to launch Memcached
   command: "{{ supervisor_bin }}/supervisorctl update"
+  environment:
+    PYTHON_VERSION: "{{ python_version }}"
 
 - name: download Memcached lib source
   get_url:

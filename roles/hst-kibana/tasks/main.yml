@@ -48,3 +48,5 @@
 
 - name: reload Supervisor config to launch ElasticSearch
   command: "{{ supervisor_bin }}/supervisorctl update"
+  environment:
+    PYTHON_VERSION: "{{ python_version }}"

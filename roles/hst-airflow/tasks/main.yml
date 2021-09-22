@@ -53,3 +53,5 @@
 
 - name: reload Supervisor config to launch Supervisor
   command: "{{ supervisor_bin }}/supervisorctl update"
+  environment:
+    PYTHON_VERSION: "{{ python_version }}"

@@ -26,6 +26,9 @@
   set_fact: java_home="/usr/alwaysdata/java/11.0.28/"
   when:  not ( elastic_version < "6.0.0" )
 
+- name: set up Java Option
+  set_fact: java_options="-Djava.io.tmpdir=/home/basket/admin/tmp"
+
 - name: download ElasticSearch for version < 5.0.0
   get_url:
     url: https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/{{ elastic_version }}/elasticsearch-{{ elastic_version }}.tar.gz
@@ -116,6 +119,10 @@
 
 - name: reload Supervisor config to launch ElasticSearch
   command: "{{ supervisor_bin }}/supervisorctl update"
+  environment:
+    PYTHON_VERSION: "{{ python_version }}"
+    JAVA_HOME: "{{ java_home }}"
+    TMPDIR: "{{ elastic_tmpdir }}"
 
 - name: Wait 300 seconds max for ElasticSearch to be ready
   wait_for:
@@ -129,3 +136,8 @@
   environment:
     PATH: "{{ java_home }}/bin:/home/{{ ansible_user }}/bin/:/home/{{ ansible_user }}/.local/bin:/usr/local/bin:/usr/bin:/bin"
   when: not ( elastic_version < "7.0.0")
+
+- name: Remove tmp ressource
+  file:
+    path: "/tmp/hsperfdata_{{ ansible_user }}"
+    state: absent

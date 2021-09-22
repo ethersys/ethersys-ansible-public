@@ -35,3 +35,5 @@
 
 - name: reload Supervisor config to launch AppSearch
   command: "{{ supervisor_bin }}/supervisorctl update"
+  environment:
+    PYTHON_VERSION: "{{ python_version }}"
