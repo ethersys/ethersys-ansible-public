@@ -1,0 +1,5 @@
+---
+dependencies:
+  - { role: hst-loopback }
+  - { role: hst-python, python_version: 3.8.12 }
+  - { role: hst-supervisor }
