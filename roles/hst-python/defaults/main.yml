@@ -1,4 +1,4 @@
-python_version: 3.7.7
+python_version: 3.7.12
 python_folder: "/home/{{ ansible_user }}/python"
 python_need_compilation: false
 python_native_version:
