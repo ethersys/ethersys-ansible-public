@@ -1,8 +1,0 @@
-mailhog_name: mailhog
-mailhog_version: 1.0.1
-mhsendmail_version: 0.2.0
-mailhog_hostname: "{{ ansible_user }}.ethersys.host"
-mailhog_smtp_sock: 1032
-mailhog_ui_sock: 8032
-mailhog_api_sock: 8032
-mailhog_password: "ToBeChanged"
