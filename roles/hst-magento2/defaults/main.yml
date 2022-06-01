@@ -1,8 +1,9 @@
 
-magento2_version: 2.3.3
+magento2_version: 2.4.4
 magento2_folder: /home/{{ ansible_user }}/magento2
 magento2_fqdn: "{{ ansible_user }}.ethersys.host"
 magento2_baseurl: "http://{{ magento2_fqdn }}"
+magento2_optional_setup_parameters: ""
 magento2_backend: "admin"
 magento2_dbhost: mysql-{{ ansible_user }}.ethersys.host
 magento2_currency: EUR
