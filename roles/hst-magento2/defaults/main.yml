@@ -1,4 +1,4 @@
-
+composer_version: 2.3.5
 magento2_version: 2.4.4
 magento2_folder: /home/{{ ansible_user }}/magento2
 magento2_fqdn: "{{ ansible_user }}.ethersys.host"
