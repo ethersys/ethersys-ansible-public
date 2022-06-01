@@ -68,11 +68,9 @@
     - "http-basic.repo.magento.com {{ magento2_ckeypub }} {{ magento2_ckeypriv }}"
   
 - name: require sample data
-  command: ~/bin/composer require {{ item }}
+  command: ~/bin/composer require -W spomky-labs/aes-key-wrap:"^6.0"
     chdir={{ magento2_folder }}
-  with_items:
-    - "magento/module-sample-data"
-  when: magento2_sample_data
+  when: magento2_sample_data and not ( magento2_version < "2.4.0" )
 
 - name: install sample data
   command: bin/magento {{ item }}
