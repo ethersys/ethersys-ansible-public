@@ -67,10 +67,10 @@
     - "repositories.magento composer https://repo.magento.com/packages.json"
     - "http-basic.repo.magento.com {{ magento2_ckeypub }} {{ magento2_ckeypriv }}"
   
-- name: require sample data
+- name: fix sample data depencies ( magento 2 >= 2.4.0 and < 2.4.6 )
   command: ~/bin/composer require -W spomky-labs/aes-key-wrap:"^6.0"
     chdir={{ magento2_folder }}
-  when: magento2_sample_data and not ( magento2_version < "2.4.0" )
+  when: magento2_sample_data and not ( magento2_version < "2.4.0" or magento2_version >= "2.4.6" )
 
 - name: install sample data
   command: bin/magento {{ item }}
@@ -80,20 +80,25 @@
     - "sampledata:deploy"
   when: magento2_sample_data
 
-- name: do not enable amqp by default
+- name: do not enable amqp by default ( magento 2 >= 2.4.0 )
   command: bin/magento module:disable {{ item }}
     chdir={{ magento2_folder }}
   with_items:
     - "Magento_WebapiAsync"
     - "Magento_Amqp"
-  when: not ( magento2_version < "2.4.0" )
+  when: magento2_version >= "2.4.0"
   
-- name: configure magento
+- name: configure magento 2 < 2.4.0
   command: bin/magento setup:install --base-url={{ magento2_baseurl }} --db-host={{ magento2_dbhost }} --db-name={{ magento2_dbname }} --db-user={{ magento2_dbuser }} --db-password={{ magento2_dbpass }} --admin-firstname={{ magento2_admin_firstname }} --admin-lastname={{ magento2_admin_lastname }} --admin-email={{ magento2_admin_email }} --admin-user={{ magento2_admin_username }} --admin-password={{ magento2_admin_password }} --language={{ magento2_locale }} --currency={{ magento2_currency }} --timezone={{ magento2_timezone }} --use-rewrites="1" --backend-frontname={{ magento2_backend }} {{ magento2_optional_setup_parameters }}
     chdir={{ magento2_folder }}
   when: magento2_version < "2.4.0"
 
-- name: configure magento
+- name: configure magento 2 >= 2.4.0 and < 2.4.6
   command: bin/magento setup:install --base-url={{ magento2_baseurl }} --db-host={{ magento2_dbhost }} --db-name={{ magento2_dbname }} --db-user={{ magento2_dbuser }} --db-password={{ magento2_dbpass }} --admin-firstname={{ magento2_admin_firstname }} --admin-lastname={{ magento2_admin_lastname }} --admin-email={{ magento2_admin_email }} --admin-user={{ magento2_admin_username }} --admin-password={{ magento2_admin_password }} --language={{ magento2_locale }} --currency={{ magento2_currency }} --timezone={{ magento2_timezone }} --use-rewrites="1" --backend-frontname={{ magento2_backend }} --elasticsearch-host={{ magento2_elasticsearch_host }} --elasticsearch-port={{ magento2_elasticsearch_port }} --elasticsearch-enable-auth={{ magento2_elasticsearch_enable_auth }} --elasticsearch-username={{ magento2_elasticsearch_username }} --elasticsearch-password={{ magento2_elasticsearch_password }} --elasticsearch-index-prefix="magento2"  {{ magento2_optional_setup_parameters }}
     chdir={{ magento2_folder }}
-  when: not ( magento2_version < "2.4.0" )
+  when: magento2_version >= "2.4.0" and magento2_version < "2.4.6"
+
+- name: configure magento 2 >= 2.4.6
+  command: bin/magento setup:install --base-url={{ magento2_baseurl }} --db-host={{ magento2_dbhost }} --db-name={{ magento2_dbname }} --db-user={{ magento2_dbuser }} --db-password={{ magento2_dbpass }} --admin-firstname={{ magento2_admin_firstname }} --admin-lastname={{ magento2_admin_lastname }} --admin-email={{ magento2_admin_email }} --admin-user={{ magento2_admin_username }} --admin-password={{ magento2_admin_password }} --language={{ magento2_locale }} --currency={{ magento2_currency }} --timezone={{ magento2_timezone }} --use-rewrites="1" --backend-frontname={{ magento2_backend }} --search-engine=elasticsearch7 --elasticsearch-host={{ magento2_elasticsearch_host }} --elasticsearch-port={{ magento2_elasticsearch_port }} --elasticsearch-enable-auth={{ magento2_elasticsearch_enable_auth }} --elasticsearch-username={{ magento2_elasticsearch_username }} --elasticsearch-password={{ magento2_elasticsearch_password }} --elasticsearch-index-prefix="magento2"  {{ magento2_optional_setup_parameters }}
+    chdir={{ magento2_folder }}
+  when: magento2_version >= "2.4.6"

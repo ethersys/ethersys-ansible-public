@@ -1,20 +1,20 @@
-composer_version: 2.3.5
-magento2_version: 2.4.4
-magento2_folder: /home/{{ ansible_user }}/magento2
+composer_version: "2.2.21"
+magento2_version: "2.4.6"
+magento2_folder: "/home/{{ ansible_user }}/magento2"
 magento2_fqdn: "{{ ansible_user }}.ethersys.host"
 magento2_baseurl: "http://{{ magento2_fqdn }}"
 magento2_optional_setup_parameters: ""
 magento2_backend: "admin"
-magento2_dbhost: mysql-{{ ansible_user }}.ethersys.host
-magento2_currency: EUR
-magento2_locale: fr_FR
-magento2_timezone: Europe/Paris
+magento2_dbhost: "mysql-{{ ansible_user }}.ethersys.host"
+magento2_currency: "EUR"
+magento2_locale: "fr_FR"
+magento2_timezone: "Europe/Paris"
 magento2_use_rewrites: yes
-magento2_session_save: files
+magento2_session_save: "files"
 magento2_admin_username: "{{ ansible_user }}"
 magento2_admin_firstname: "{{ ansible_user }}"
-magento2_admin_lastname: ethersys.host
-magento2_admin_password: tobechang3d!
+magento2_admin_lastname: "ethersys.host"
+magento2_admin_password: "tobechang3d!"
 magento2_admin_email: "{{ ansible_user }}@ethersys.host"
 magento2_encryption_key: "{{ 9999999999999999999999 | random }}"
 magento2_sample_data: yes
