@@ -3,4 +3,4 @@
   get_url:
     url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
     dest: ~/bin/wp
-    mode: 0655
+    mode: 0755
