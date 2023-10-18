@@ -1,52 +1,72 @@
 ---
-- name: unset current Python env variable
-  shell: unset PYTHONPATH PYTHONHOME
-  ignore_errors: yes
+- name: Unset current Python env variable
+  ansible.builtin.shell:
+    cmd: set -o pipefail && unset PYTHONPATH PYTHONHOME
+  args:
+    executable: /bin/bash
+  ignore_errors: true
+  changed_when: true
 
-- name: ensure all needed folders exist
-  file: path="{{ python_folder }}/{{ item }}" state=directory
+- name: Ensure all needed folders exist
+  ansible.builtin.file:
+    path: "{{ python_folder }}/{{ item }}"
+    state: directory
+    mode: "0755"
   with_items:
     - src
     - builds
 
-- name: purge pip cache
-  file: path=~/.cache/pip state=absent
+- name: Purge pip cache
+  ansible.builtin.file:
+    path: ~/.cache/pip
+    state: absent
 
-- name: download Python source
-  get_url:
+- name: Download Python source
+  ansible.builtin.get_url:
     url: https://www.python.org/ftp/python/{{ python_version }}/Python-{{ python_version }}.tgz
     dest: "{{ python_folder }}/src/Python-{{ python_version }}.tgz"
+    mode: "0644"
 
-- name: extract Python source
-  unarchive:
+- name: Extract Python source
+  ansible.builtin.unarchive:
     src: "{{ python_folder }}/src/Python-{{ python_version }}.tgz"
     dest: "{{ python_folder }}/src/"
-    remote_src: True
+    remote_src: true
 
-- name: configure and make Python
-  shell: chdir="{{ python_folder }}/src/Python-{{ python_version }}/" {{ item }}
+- name: Configure and make Python
+  ansible.builtin.shell:
+    cmd: "set -o pipefail && {{ item }}"
+  args:
+    executable: /bin/bash
+    chdir: "{{ python_folder }}/src/Python-{{ python_version }}/"
   with_items:
     - ./configure --prefix={{ python_folder }}/builds/{{ python_version }} --enable-shared
     - make
     - make install
   environment:
     LDFLAGS: -Wl,-rpath={{ python_folder }}/builds/{{ python_version }}/lib
+  changed_when: true
 
-- name: add Python binary folder to env PATH
-  lineinfile:
-    create: yes
+- name: Add Python binary folder to env PATH
+  ansible.builtin.lineinfile:
+    create: true
     dest: ~/.bash_profile
     line: PATH={{ python_folder }}/builds/{{ python_version }}/bin:$PATH
+    mode: "0644"
 
-- name: use local pip egg
-  shell: source ~/.bash_profile; python -m ensurepip
+- name: Use local pip egg
+  ansible.builtin.shell:
+    cmd: set -o pipefail && source ~/.bash_profile; python -m ensurepip
   args:
-     executable: /bin/bash
+    executable: /bin/bash
+  changed_when: true
 
-- name: install pip package and virtualenv
-  shell: source ~/.bash_profile; pip install {{ item }}
+- name: Install pip package and virtualenv
+  ansible.builtin.shell:
+    cmd: set -o pipefail && source ~/.bash_profile; pip install {{ item }}
   with_items:
     - --upgrade pip
     - virtualenv
   args:
-     executable: /bin/bash
+    executable: /bin/bash
+  changed_when: true

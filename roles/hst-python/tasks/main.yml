@@ -1,23 +1,29 @@
 ---
-- name: check current installed Python version
-  shell: source ~/.bash_profile; python --version
+- name: Check current installed Python version
+  ansible.builtin.shell:
+    cmd: set -o pipefail && source ~/.bash_profile; python --version
   args:
-     executable: /bin/bash
-  ignore_errors: yes
+    executable: /bin/bash
+  ignore_errors: true
+  changed_when: true
   register: python_version_output
 
 # Python < 3.4 send version output to stderr.. https://bugs.python.org/issue18338 to improve
-- name: check if Python need to be compiled
-  set_fact: python_need_compilation=true
-  when: (python_version_output.stderr != ("Python " + python_version)) and (python_version not in python_native_version)
+- name: Check if Python need to be compiled
+  ansible.builtin.set_fact:
+    python_need_compilation: true
+  when: (python_version_output.stderr != ("Python " + python_version))
+          and (python_version_output.stdout != ("Python " + python_version))
+          and (python_version not in python_native_version)
 
-- name: compile Python if needed
-  include_tasks: compile.yml
+- name: Compile Python if needed
+  ansible.builtin.include_tasks: compile.yml
   when: python_need_compilation|bool
 
-- name: set Python version
-  lineinfile:
-    create: yes
+- name: Set Python version
+  ansible.builtin.lineinfile:
+    create: true
     dest: ~/.bash_profile
     line: export PYTHON_VERSION={{ python_version }}
+    mode: "0644"
   when: (not python_need_compilation) and (python_version in python_native_version)
